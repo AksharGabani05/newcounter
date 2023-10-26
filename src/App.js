@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-function App() {
+function Counter() {
+  const [count, setCount] = useState(0);
+  const [users, setusers] = useState(false);
+
+  useEffect(() => {
+    let interval;
+
+    if (users) {
+      interval = setInterval(() => {
+        setCount(prevCount => prevCount + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [users]);
+
+  const toggleCounter = () => {
+    setusers(!users);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Counter: {count}</h1>
+      <button onClick={toggleCounter}>{users ? "Stop" : "Start"}</button>
     </div>
   );
 }
 
-export default App;
+export default Counter;
